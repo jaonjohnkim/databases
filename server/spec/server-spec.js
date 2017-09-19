@@ -15,11 +15,12 @@ describe('Persistent Node Chat Server', function() {
       database: 'chat'
     });
     dbConnection.connect();
-
+    console.log('RIGHT after CONNECT');
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
     var tablename = 'messages'; // TODO: fill this out
     dbConnection.query('truncate ' + tablename, done);
+    console.log('RIGHT after Query');
     // tablename = 'users';
     // dbConnection.query('truncate ' + tablename, done);
     // tablename = 'rooms';
@@ -38,6 +39,7 @@ describe('Persistent Node Chat Server', function() {
       json: { username: 'Valjean' }
     }, function () {
       // Post a message to the node chat server:
+      console.log('About to Post a message to server');
       request({
         method: 'POST',
         uri: 'http://127.0.0.1:3000/classes/messages',
@@ -49,7 +51,7 @@ describe('Persistent Node Chat Server', function() {
       }, function () {
         // Now if we look in the database, we should find the
         // posted message there.
-
+        console.log('POST was successful!');
         // TODO: You might have to change this test to get all the data from
         // your message table, since this is schema-dependent.
         var queryString = 'SELECT * FROM messages';

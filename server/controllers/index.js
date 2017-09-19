@@ -11,8 +11,6 @@ var headers = {
 module.exports = {
   messages: {
     get: function (req, res) {
-      console.log('INSIDE GET');
-
       // express query response space
       models.messages.get((results) => {
         // db query response space
@@ -23,28 +21,43 @@ module.exports = {
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      console.log('POST REQUEST');
       var data = '';
       req.on('data', (chunk) => {
         data += chunk;
-        // console.log('CHUNK TO STRING WORKS: ', chunk.toString());
-        // console.log('Data is this: ', data);
       });
       req.on('end', () => {
-        console.log('Inside request end');
         models.messages.post(JSON.parse(data), (results) => {
-          
           res.writeHead(201, headers);
           res.end(JSON.stringify(results));
         });
       });
-    } // a function which handles posting a message to the database
+    }
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+      console.log('USERS GET REQUEST');
+      models.users.get((results) => {
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(results));
+      });
+    },
+    post: function (req, res) {
+      console.log('USERS POST REQUEST');
+      var data = '';
+      req.on('data', (chunk) => {
+        data += chunk;
+      });
+      req.on('end', () => {
+        var promise = models.users.post(JSON.parse(data));
+        promise.then((results) => {
+          console.log('results', results);
+          res.writeHead(201, headers);
+          res.end(JSON.stringify(results));
+        });
+      });
+    }
   }
 };
 
