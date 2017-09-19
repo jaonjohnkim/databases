@@ -27,12 +27,12 @@ DROP TABLE IF EXISTS messages;
 
 CREATE TABLE messages (
     
-  id INT(4) AUTO_INCREMENT,
+  objectId INT(4) AUTO_INCREMENT,
   text MEDIUMTEXT,
   createdAt TIMESTAMP,
   id_users INT(4),
   id_rooms INT(4),
-  PRIMARY KEY (id),
+  PRIMARY KEY (objectId),
   FOREIGN KEY (id_users) REFERENCES users (id),
   FOREIGN KEY (id_rooms) REFERENCES rooms (id)
 );

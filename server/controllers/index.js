@@ -17,6 +17,7 @@ module.exports = {
       models.messages.get((results) => {
         // db query response space
         res.writeHead(200, headers);
+        console.log('results :', JSON.stringify(results));
         res.end(JSON.stringify(results));
         //res.end(results);
       });
@@ -31,10 +32,10 @@ module.exports = {
       });
       req.on('end', () => {
         console.log('Inside request end');
-        models.messages.post(JSON.parse(data), () => {
+        models.messages.post(JSON.parse(data), (results) => {
           
           res.writeHead(201, headers);
-          res.end();
+          res.end(JSON.stringify(results));
         });
       });
     } // a function which handles posting a message to the database

@@ -65,6 +65,7 @@ var app = {
       //data: { order: '-createdAt' },
       contentType: 'application/json',
       success: function(data) {
+        console.log('FETCH DATA', data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { 
           app.stopSpinner();
