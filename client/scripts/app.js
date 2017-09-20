@@ -30,9 +30,9 @@ var app = {
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(function() {
-      app.fetch(true);
-    }, 3000);
+    // setInterval(function() {
+    //   app.fetch(true);
+    // }, 3000);
   },
 
   send: function(message) {
@@ -42,6 +42,8 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
+      //json: JSON.stringify(message),
+      contentType: 'application/json',
       data: JSON.stringify(message),
       success: function (data) {
         // Clear messages input

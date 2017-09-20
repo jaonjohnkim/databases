@@ -23,6 +23,8 @@ CREATE TABLE rooms (
   PRIMARY KEY (id)
 );
 
+INSERT INTO rooms (roomname) VALUES ('main');
+
 DROP TABLE IF EXISTS messages;
 
 CREATE TABLE messages (
@@ -31,7 +33,7 @@ CREATE TABLE messages (
   text MEDIUMTEXT,
   createdAt TIMESTAMP,
   id_users INT(4),
-  id_rooms INT(4),
+  id_rooms INT(4) DEFAULT 1,
   PRIMARY KEY (objectId),
   FOREIGN KEY (id_users) REFERENCES users (id),
   FOREIGN KEY (id_rooms) REFERENCES rooms (id)

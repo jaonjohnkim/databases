@@ -4,8 +4,8 @@ var Promise = require('bluebird');
 module.exports = {
   messages: {
     get: function (callback) {
-
-      var queryStr = 'SELECT objectId, text, createdAt, username, roomname FROM messages, users, rooms WHERE messages.id_users = users.id AND messages.id_rooms = rooms.id ORDER BY objectId DESC';
+      var queryStr = 'SELECT objectId, text, createdAt, roomname, username FROM messages LEFT JOIN (rooms) ON (messages.id_rooms = rooms.id) LEFT JOIN (users) ON (messages.id_users = users.id) ORDER BY objectId DESC';
+      // var queryStr = 'SELECT objectId, text, createdAt, username, roomname FROM messages, users, rooms WHERE messages.id_users = users.id AND messages.id_rooms = rooms.id ORDER BY objectId DESC';
       var queryArgs = [];
       db.dbConnect.query(queryStr, queryArgs, (err, results) => {
         if (err) { throw err; }
@@ -44,7 +44,7 @@ module.exports = {
           // userId and roomId are both here
           console.log('userId is valid here', userId);
           console.log('roomId is this: ', roomId);
-          var queryStr = `INSERT INTO messages (id_users, text, id_rooms) VALUES (${userId}, '${data.text}', ${roomId})`;
+          var queryStr = `INSERT INTO messages (id_users, text, id_rooms) VALUES (${userId}, '${data.text.replace("'", "''")}', ${roomId})`;
           var queryArgs = [];
           db.dbConnect.query(queryStr, queryArgs, (err, results) => {
             if (err) { throw err; }

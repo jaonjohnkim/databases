@@ -32,6 +32,7 @@ describe('Persistent Node Chat Server', function() {
   });
 
   it('Should insert posted messages to the DB', function(done) {
+    console.log('TEST:Should insert posted messages to the DB');
     // Post the user to the chat server.
     request({
       method: 'POST',
@@ -45,10 +46,10 @@ describe('Persistent Node Chat Server', function() {
         uri: 'http://127.0.0.1:3000/classes/messages',
         json: {
           username: 'Valjean',
-          message: 'In mercy\'s name, three days is all I need.',
+          text: "In mercy's name, three days is all I need.",
           roomname: 'Hello'
         }
-      }, function () {
+      }, function () { //successful callback
         // Now if we look in the database, we should find the
         // posted message there.
         console.log('POST was successful!');
@@ -58,15 +59,18 @@ describe('Persistent Node Chat Server', function() {
         var queryArgs = [];
 
         dbConnection.query(queryString, queryArgs, function(err, results) {
+          console.log('I am inside dbConnection.query');
           // Should have one result:
           expect(results.length).to.equal(1);
-
+          console.log('RESULTS', results);
           // TODO: If you don't have a column named text, change this test.
-          expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');
+          expect(results[0].text).to.equal("In mercy's name, three days is all I need.");
 
           done();
         });
       });
+    }, function (err) {
+      console.log('error', err); 
     });
   });
 
@@ -86,8 +90,9 @@ describe('Persistent Node Chat Server', function() {
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
-        expect(messageLog[0].text).to.equal('Men like you can never change!');
-        //expect(messageLog[0].roomname).to.equal('main');//CHANGE LATER!!!
+        console.log('message log', messageLog.results[0]);
+        expect(messageLog.results[0].text).to.equal('Men like you can never change!');
+        expect(messageLog.results[0].roomname).to.equal('main');//CHANGE LATER!!!
         done();
       });
     });

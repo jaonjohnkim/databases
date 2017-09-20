@@ -15,21 +15,17 @@ module.exports = {
       models.messages.get((results) => {
         // db query response space
         res.writeHead(200, headers);
-        console.log('results :', JSON.stringify(results));
+        // console.log('results :', JSON.stringify(results));
         res.end(JSON.stringify(results));
         //res.end(results);
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      var data = '';
-      req.on('data', (chunk) => {
-        data += chunk;
-      });
-      req.on('end', () => {
-        models.messages.post(JSON.parse(data), (results) => {
-          res.writeHead(201, headers);
-          res.end(JSON.stringify(results));
-        });
+      console.log('JUST A BODY', req.body);
+      //console.log('MESSAGES POST REQUEST', JSON.parse(Object.keys(req.body)[0]));
+      models.messages.post(req.body, (results) => {
+        res.writeHead(201, headers);
+        res.end(JSON.stringify(results));
       });
     }
   },
@@ -44,18 +40,12 @@ module.exports = {
       });
     },
     post: function (req, res) {
-      console.log('USERS POST REQUEST');
-      var data = '';
-      req.on('data', (chunk) => {
-        data += chunk;
-      });
-      req.on('end', () => {
-        var promise = models.users.post(JSON.parse(data));
-        promise.then((results) => {
-          console.log('results', results);
-          res.writeHead(201, headers);
-          res.end(JSON.stringify(results));
-        });
+      console.log('USERS POST REQUEST', req.body);
+      var promise = models.users.post(req.body);
+      promise.then((results) => {
+        console.log('results', results);
+        res.writeHead(201, headers);
+        res.end(JSON.stringify(results));
       });
     }
   }
