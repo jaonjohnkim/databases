@@ -40,10 +40,8 @@ module.exports = {
       });
     },
     post: function (req, res) {
-      console.log('USERS POST REQUEST', req.body);
       var promise = models.users.post(req.body);
       promise.then((results) => {
-        console.log('results', results);
         res.writeHead(201, headers);
         res.end(JSON.stringify(results));
       });

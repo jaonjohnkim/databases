@@ -15,12 +15,10 @@ describe('Persistent Node Chat Server', function() {
       database: 'chat'
     });
     dbConnection.connect();
-    console.log('RIGHT after CONNECT');
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
     var tablename = 'messages'; // TODO: fill this out
     dbConnection.query('truncate ' + tablename, done);
-    console.log('RIGHT after Query');
     // tablename = 'users';
     // dbConnection.query('truncate ' + tablename, done);
     // tablename = 'rooms';
@@ -59,13 +57,10 @@ describe('Persistent Node Chat Server', function() {
         var queryArgs = [];
 
         dbConnection.query(queryString, queryArgs, function(err, results) {
-          console.log('I am inside dbConnection.query');
           // Should have one result:
           expect(results.length).to.equal(1);
-          console.log('RESULTS', results);
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].text).to.equal("In mercy's name, three days is all I need.");
-
           done();
         });
       });
@@ -90,9 +85,8 @@ describe('Persistent Node Chat Server', function() {
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
-        console.log('message log', messageLog.results[0]);
         expect(messageLog.results[0].text).to.equal('Men like you can never change!');
-        expect(messageLog.results[0].roomname).to.equal('main');//CHANGE LATER!!!
+        expect(messageLog.results[0].roomname).to.equal('main');
         done();
       });
     });

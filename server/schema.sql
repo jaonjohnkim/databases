@@ -11,7 +11,9 @@ DROP TABLE IF EXISTS users;
     
 CREATE TABLE users (
   id INT(4) PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(64)
+  username VARCHAR(64),
+  createdAt TIMESTAMP,
+  updatedAt DATETIME
 );
 
 
@@ -20,10 +22,13 @@ DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms (
   id INT(4) AUTO_INCREMENT,
   roomname VARCHAR(64),
+  createdAt TIMESTAMP,
+  updatedAt DATETIME,
   PRIMARY KEY (id)
 );
 
 INSERT INTO rooms (roomname) VALUES ('main');
+INSERT INTO users (username) VALUES ('anonymous');
 
 DROP TABLE IF EXISTS messages;
 
@@ -32,7 +37,8 @@ CREATE TABLE messages (
   objectId INT(4) AUTO_INCREMENT,
   text MEDIUMTEXT,
   createdAt TIMESTAMP,
-  id_users INT(4),
+  updatedAt DATETIME,
+  id_users INT(4) DEFAULT 1,
   id_rooms INT(4) DEFAULT 1,
   PRIMARY KEY (objectId),
   FOREIGN KEY (id_users) REFERENCES users (id),
